@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaruchsTreks", "BaruchsTreks\BaruchsTreks.csproj", "{8AD58EDA-47C5-40CA-855C-EAA4158633C6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8AD58EDA-47C5-40CA-855C-EAA4158633C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AD58EDA-47C5-40CA-855C-EAA4158633C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AD58EDA-47C5-40CA-855C-EAA4158633C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AD58EDA-47C5-40CA-855C-EAA4158633C6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D84AC81D-EB38-49FA-922D-3FBF2D7623B1}
+	EndGlobalSection
+EndGlobal
