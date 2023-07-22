@@ -1,10 +1,30 @@
 ﻿@page
-@model IndexModel
+@using BaruchsTreks.Data
+@using Microsoft.EntityFrameworkCore;
+@using System.Collections.Generic;
+
+@inject AppDbContext dbContext
+
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Přehled";
+    var trips = dbContext.Trips;
+    var tripsCount = trips.Count();
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Vítejte</h1>
+    <p>Tady budou aktualitky a přehledy z mého výletníku.</p>
+    
+    <div>Počet teků je: @tripsCount</div>
+    
+    <p>
+        <div>No a tady treky, na kterých se v poslední době pracovalo:</div>
+        <ul>
+        @foreach (var trip in trips.OrderByDescending(o => o.Modified).Take(5).Select(s => s.Title))
+        {
+            <li>@trip</li>
+        }
+        </ul>
+    </p>
 </div>
+
