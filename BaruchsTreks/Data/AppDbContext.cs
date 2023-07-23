@@ -1,5 +1,6 @@
 using BaruchsTreks.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Reflection.Metadata;
 
 public class AppDbContext : DbContext
