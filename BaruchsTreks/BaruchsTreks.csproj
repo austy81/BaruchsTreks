@@ -5,10 +5,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-BaruchsTreks-e790d07b-57ee-4170-9456-775a0b72902b</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/b355f86c-94b4-467b-b643-1206cbf0e24c/resourceGroups/BaruchsTreks/providers/microsoft.insights/components/BaruchsTreks</ApplicationInsightsResourceId>
     <!--<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>-->
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.5" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">

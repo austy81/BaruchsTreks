@@ -29,6 +29,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
         options.UseSqlServer(connectionString);
     });
+builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
 
 
