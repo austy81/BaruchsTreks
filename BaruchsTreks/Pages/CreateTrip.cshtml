@@ -6,6 +6,9 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
+<script type="text/javascript" src="https://api.mapy.cz/loader.js"></script>
+<script type="text/javascript">Loader.load();</script>
+
 <h1>CreateTrip</h1>
 
 <h4>Trip</h4>
@@ -29,6 +32,10 @@
                 <input asp-for="Trip.Length" class="form-control timepicker" />
                 <span asp-validation-for="Trip.Length" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label class="control-label">Pinpoint main spot</label>
+                <div id="m" style="height:380px"></div>
+            </div>
             <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -40,6 +47,37 @@
 <div>
     <a asp-page="Index">Back to List</a>
 </div>
+
+<script type="text/javascript">
+    var center = SMap.Coords.fromWGS84(14.400307, 50.071853);
+    var m = new SMap(JAK.gel("m"), center);
+    m.addDefaultLayer(SMap.DEF_BASE).enable();
+    var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM); /* Ovládání myší */
+    m.addControl(mouse);
+
+    var l = new SMap.Layer.Marker();
+    m.addLayer(l).enable();
+
+    var mark = new SMap.Marker(center);
+    mark.decorate(SMap.Marker.Feature.Draggable);
+    l.addMarker(mark);
+
+    function start(e) { /* Začátek tažení */
+        var node = e.target.getContainer();
+        node[SMap.LAYER_MARKER].style.cursor = "help";
+    }
+
+    function stop(e) {
+        var node = e.target.getContainer();
+        node[SMap.LAYER_MARKER].style.cursor = "";
+        var coords = e.target.getCoords();
+        alert("Cílová pozice: " + coords.toWGS84(2).reverse().join(" "));
+    }
+
+    var signals = m.getSignals();
+    signals.addListener(window, "marker-drag-stop", stop);
+    signals.addListener(window, "marker-drag-start", start);
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

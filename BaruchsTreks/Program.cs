@@ -27,7 +27,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         var config = builder.Configuration;
         var connectionString = config.GetConnectionString("database");
 
-        options.UseSqlServer(connectionString);
+        options.UseSqlServer(connectionString, o =>
+        {
+            o.EnableRetryOnFailure();
+        });
     });
 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
