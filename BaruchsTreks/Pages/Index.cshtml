@@ -9,22 +9,25 @@
     ViewData["Title"] = "Přehled";
     var trips = dbContext.Trips;
     var tripsCount = trips.Count();
+    var latestTrips = trips.OrderByDescending(o => o.Modified).Take(5).ToList();
 }
 
-<div class="text-center">
-    <h1 class="display-4">Vítejte</h1>
-    <p>Tady budou aktualitky a přehledy z mého výletníku.</p>
-    
-    <div>Počet teků je: @tripsCount</div>
-    
-    <p>
-        <div>No a tady treky, na kterých se v poslední době pracovalo:</div>
-        <ul>
-        @foreach (var trip in trips.OrderByDescending(o => o.Modified).Take(5).Select(s => s.Title))
-        {
-            <li>@trip</li>
-        }
-        </ul>
-    </p>
-</div>
+<div class="container">
+    <header class="text-center">
+        <h1 class="display-4">Vítejte</h1>
+        <h2>Tady budou aktualitky a přehledy z mého výletníku.</h2>
+    </header>
 
+    <section>
+        <div class="text-left">
+            <p>Celkový počet treků je: @tripsCount</p>
+            <div>No a tady jsou treky, na kterých se v poslední době pracovalo:</div>
+            <ul>
+                @foreach (var trip in latestTrips)
+                {
+                    <li>(@trip.Modified) <b>@trip.Title</b></li>
+                }
+            </ul>
+        </div>
+    </section>
+</div>
