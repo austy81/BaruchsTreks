@@ -1,11 +1,10 @@
-using Microsoft.AspNetCore.Authentication;
+using BaruchsTreks.Data;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,16 +24,14 @@ builder.Services
 builder.Services.AddDbContext<AppDbContext>(options =>
     {
         var config = builder.Configuration;
-        var connectionString = config.GetConnectionString("database");
 
-        options.UseSqlServer(connectionString, o =>
-        {
-            o.EnableRetryOnFailure();
-        });
+
+        var databaseName = config.GetValue<string>("CosmosDatabaseName");
+        var cosmosDbConnectionString = config.GetValue<string>("COSMOSDB_CONNECTION_STRING");
+
+        _ = options.UseCosmos(cosmosDbConnectionString, databaseName);
     });
 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
-
-
 
 var app = builder.Build();
 
@@ -51,8 +48,36 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
 
     var context = services.GetRequiredService<AppDbContext>();
-    context.Database.EnsureCreated();
-    // DbInitializer.Initialize(context);
+    await context.Database.EnsureDeletedAsync();
+    await context.Database.EnsureCreatedAsync();
+
+    context.Add(new Trip()
+    {
+        Title = "Demo",
+        Length = TimeSpan.FromHours(8)
+    });
+
+    //string[] roles = new string[] { "owner", "visitor" };
+
+    //foreach (string role in roles)
+    //{
+    //    context.Add(new IdentityRole(role));
+    //}
+
+    //var user = new IdentityUser
+    //{
+    //    Email = "xxxx@example.com",
+    //    NormalizedEmail = "XXXX@EXAMPLE.COM",
+    //    UserName = "Owner",
+    //    NormalizedUserName = "OWNER",
+    //    PhoneNumber = "+111111111111",
+    //    EmailConfirmed = true,
+    //    PhoneNumberConfirmed = true,
+    //    SecurityStamp = Guid.NewGuid().ToString("D"),
+    //};
+    //context.Add(user);
+
+    await context.SaveChangesAsync();
 }
 
 app.UseHttpsRedirection();
