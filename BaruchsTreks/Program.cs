@@ -48,13 +48,13 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
 
     var context = services.GetRequiredService<AppDbContext>();
-    //await context.Database.EnsureDeletedAsync();
+    await context.Database.EnsureDeletedAsync();
     await context.Database.EnsureCreatedAsync();
 
     context.Add(new Trip()
     {
         Title = "Demo",
-        Length = TimeSpan.FromHours(8)
+        LengthHours = 8
     });
 
     //string[] roles = new string[] { "owner", "visitor" };

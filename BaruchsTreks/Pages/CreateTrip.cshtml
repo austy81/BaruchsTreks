@@ -28,13 +28,42 @@
                 <span asp-validation-for="Trip.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Trip.Length" class="control-label"></label>
-                <input asp-for="Trip.Length" class="form-control timepicker" />
-                <span asp-validation-for="Trip.Length" class="text-danger"></span>
+                <label asp-for="Trip.LengthHours" class="control-label"></label>
+                <input asp-for="Trip.LengthHours" class="form-control timepicker" />
+                <span asp-validation-for="Trip.LengthHours" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Pinpoint main spot</label>
-                <div id="m" style="height:380px"></div>
+                <label asp-for="Trip.MetersAscend" class="control-label"></label>
+                <input asp-for="Trip.MetersAscend" class="form-control timepicker" />
+                <span asp-validation-for="Trip.MetersAscend" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Pinpoint High point</label>
+                <div id="mHigh" style="height:380px"></div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Trip.HighPoint.Longtitude" class="control-label">xxx</label>
+                <input asp-for="Trip.HighPoint.Longtitude" disabled=True class="form-control" />
+                <span asp-validation-for="Trip.HighPoint.Longtitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Trip.HighPoint.Latitude" class="control-label"></label>
+                <input asp-for="Trip.HighPoint.Latitude" disabled=True class="form-control disabled" />
+                <span asp-validation-for="Trip.HighPoint.Latitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Pinpoint parking</label>
+                <div id="mParking" style="height:380px"></div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Trip.Parking.Longtitude" class="control-label">xxx</label>
+                <input asp-for="Trip.Parking.Longtitude" disabled=True class="form-control" />
+                <span asp-validation-for="Trip.Parking.Longtitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Trip.Parking.Latitude" class="control-label"></label>
+                <input asp-for="Trip.Parking.Latitude" disabled=True class="form-control disabled" />
+                <span asp-validation-for="Trip.Parking.Latitude" class="text-danger"></span>
             </div>
             <br />
             <div class="form-group">
@@ -52,17 +81,30 @@
 
 <script type="text/javascript">
     var center = SMap.Coords.fromWGS84(14.400307, 50.071853);
-    var m = new SMap(JAK.gel("m"), center);
-    m.addDefaultLayer(SMap.DEF_BASE).enable();
-    var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM); /* Ovládání myší */
-    m.addControl(mouse);
 
-    var l = new SMap.Layer.Marker();
-    m.addLayer(l).enable();
+    var mHigh = new SMap(JAK.gel("mHigh"), center);
+    mHigh.addDefaultLayer(SMap.DEF_BASE).enable();
+    var mouseHigh = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM); /* Ovládání myší */
+    mHigh.addControl(mouseHigh);
+
+    var mParking = new SMap(JAK.gel("mParking"), center);
+    mParking.addDefaultLayer(SMap.DEF_BASE).enable();
+    var mouseParking = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM); /* Ovládání myší */
+    mParking.addControl(mouseParking);
+
+    var l1 = new SMap.Layer.Marker();
+    mHigh.addLayer(l1).enable();
+    
+    var l2 = new SMap.Layer.Marker();
+    mParking.addLayer(l2).enable();
 
     var mark = new SMap.Marker(center);
     mark.decorate(SMap.Marker.Feature.Draggable);
-    l.addMarker(mark);
+    l1.addMarker(mark);
+
+    var mark2 = new SMap.Marker(center);
+    mark2.decorate(SMap.Marker.Feature.Draggable);
+    l2.addMarker(mark2);
 
     function start(e) { /* Začátek tažení */
         var node = e.target.getContainer();
@@ -73,12 +115,25 @@
         var node = e.target.getContainer();
         node[SMap.LAYER_MARKER].style.cursor = "";
         var coords = e.target.getCoords();
-        alert("Cílová pozice: " + coords.toWGS84(2).reverse().join(" "));
+        JAK.gel("Trip_HighPoint_Longtitude").value = coords.x;
+        JAK.gel("Trip_HighPoint_Latitude").value = coords.y;
     }
 
-    var signals = m.getSignals();
-    signals.addListener(window, "marker-drag-stop", stop);
-    signals.addListener(window, "marker-drag-start", start);
+    function stopParking(e) {
+        var node = e.target.getContainer();
+        node[SMap.LAYER_MARKER].style.cursor = "";
+        var coords = e.target.getCoords();
+        JAK.gel("Trip_Parking_Longtitude").value = coords.x;
+        JAK.gel("Trip_Parking_Latitude").value = coords.y;
+    }
+
+    var signalsHigh = mHigh.getSignals();
+    signalsHigh.addListener(window, "marker-drag-stop", stop);
+    signalsHigh.addListener(window, "marker-drag-start", start);
+
+    var signalsParking = mParking.getSignals();
+    signalsParking.addListener(window, "marker-drag-stop", stopParking);
+    signalsParking.addListener(window, "marker-drag-start", start);
 </script>
 
 @section Scripts {
