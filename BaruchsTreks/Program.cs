@@ -34,6 +34,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     });
 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
+builder.Services.AddHttpContextAccessor();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
