@@ -44,7 +44,7 @@ namespace BaruchsTreks.Pages
         }
 
         [BindProperty]
-        public Trip Trip { get; set; } = default!;
+        public Trip Trip { get; set; } = default;
 
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD

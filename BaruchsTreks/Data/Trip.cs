@@ -24,8 +24,8 @@ namespace BaruchsTreks.Data
 
     public class LocalGeometry
     {
-        public double Longtitude;
-        public double Latitude;
+        public double Longtitude { get; set; } = 0;
+        public double Latitude { get; set; } = 0;
     }
 
 }
