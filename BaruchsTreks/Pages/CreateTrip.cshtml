@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/CreateTrip"
 @model BaruchsTreks.Pages.CreateTripModel
 
 @{
@@ -11,8 +11,6 @@
 
 <h1>CreateTrip</h1>
 
-<h4>Trip</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
@@ -43,12 +41,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Trip.HighPoint.Longtitude" class="control-label">xxx</label>
-                <input asp-for="Trip.HighPoint.Longtitude" disabled=True class="form-control" />
+                <input asp-for="Trip.HighPoint.Longtitude" class="form-control" />
                 <span asp-validation-for="Trip.HighPoint.Longtitude" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Trip.HighPoint.Latitude" class="control-label"></label>
-                <input asp-for="Trip.HighPoint.Latitude" disabled=True class="form-control disabled" />
+                <input asp-for="Trip.HighPoint.Latitude" class="form-control" />
                 <span asp-validation-for="Trip.HighPoint.Latitude" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -67,7 +65,7 @@
             </div>
             <br />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Submit" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -123,6 +121,7 @@
         var node = e.target.getContainer();
         node[SMap.LAYER_MARKER].style.cursor = "";
         var coords = e.target.getCoords();
+
         JAK.gel("Trip_Parking_Longtitude").value = coords.x;
         JAK.gel("Trip_Parking_Latitude").value = coords.y;
     }

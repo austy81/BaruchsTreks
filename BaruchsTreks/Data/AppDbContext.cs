@@ -16,7 +16,7 @@ public class AppDbContext : IdentityDbContext
         modelBuilder.Entity<Trip>()
             .HasNoDiscriminator()
             .ToContainer(nameof(Trips))
-            .HasPartitionKey(da => da.Id);
+            .HasPartitionKey(da => da.id);
 
         modelBuilder.Entity<IdentityRole>()
             .Property(b => b.ConcurrencyStamp)
@@ -87,7 +87,7 @@ public class AppDbContext : IdentityDbContext
 
             if (entityEntry.State == EntityState.Added)
             {
-                ((DbEntity)entityEntry.Entity).Id = Guid.NewGuid();
+                ((DbEntity)entityEntry.Entity).id = Guid.NewGuid();
             }
         }
     }

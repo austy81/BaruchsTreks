@@ -1,5 +1,7 @@
 html {
   font-size: 14px;
+  position: relative;
+  min-height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -12,12 +14,97 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
-
 body {
     margin-bottom: 60px;
     background-color: #ecdbff
+}
+
+/* Reset some default styles */
+body, ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Style for the trip container */
+.trip-container {
+    display: flex;
+    justify-content: left;
+    align-items: flex-start;
+    height: 100vh;
+}
+
+/* Style for the trip list */
+.trip-list {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(3, minmax(250px, 1fr)); /* Limit to 3 columns */
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+/* Style for the trip box */
+.trip-box {
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 200px; /* Set the desired fixed height */
+    overflow: hidden; /* Hide any overflowing content */
+    min-width: 250px; /* Set the desired minimum width */
+}
+
+/* Style for trip info */
+.trip-info {
+    text-align: left;
+}
+
+/* Style for trip date */
+.trip-date {
+    color: #888;
+    font-size: 14px;
+}
+
+* Style for the trip-title container */
+.trip-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Rest of your existing CSS styles */
+
+/* Style for the edit button */
+.edit-button {
+    background-color: #6ab4f3;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+    .edit-button:hover {
+        background-color: #4f9fe0;
+    }
+
+/* Style for trip title */
+.trip-title {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+/* Style for trip description */
+.trip-description {
+    margin-top: 10px;
+    color: #333;
+}
+
+/* Style for trip length */
+.trip-length {
+    margin-top: 10px;
+    color: #555;
 }
