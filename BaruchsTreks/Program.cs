@@ -22,11 +22,11 @@ builder.Services.AddAuthentication(options =>
 //    options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
 //}); // Configure Google authentication
 
-builder.Services.AddAuthorization(options =>
-{
-    // By default, all incoming requests will be authorized according to the default policy.
-    options.FallbackPolicy = options.DefaultPolicy;
-});
+//builder.Services.AddAuthorization(options =>
+//{
+//    // By default, all incoming requests will be authorized according to the default policy.
+//    options.FallbackPolicy = options.DefaultPolicy;
+//});
 
 builder.Services
     .AddRazorPages()
@@ -62,14 +62,14 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
 
     var context = services.GetRequiredService<AppDbContext>();
-    await context.Database.EnsureDeletedAsync();
+    //await context.Database.EnsureDeletedAsync();
     await context.Database.EnsureCreatedAsync();
 
-    context.Add(new Trip()
-    {
-        Title = "Demo",
-        LengthHours = 8
-    });
+    //context.Add(new Trip()
+    //{
+    //    Title = "Demo",
+    //    LengthHours = 8
+    //});
 
     //string[] roles = new string[] { "owner", "visitor" };
 
@@ -99,9 +99,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication();
+//app.UseAuthentication();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();

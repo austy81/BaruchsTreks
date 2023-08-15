@@ -15,7 +15,7 @@
 <div class="container">
     <header class="text-center">
         <h1 class="display-4">Vítejte</h1>
-        <h2>Tady budou aktualitky a přehledy z mého výletníku.</h2>
+        <h2>Tady mám svoje treky, kde jsem byla, nebo budu.</h2>
     </header>
 
     <section>
@@ -32,7 +32,9 @@
                             </div>                            
                             <span class="trip-date">Modified: (@trip.Modified)</span>
                             <p class="trip-length">Lenth: @trip.LengthHours hours</p>
-                            <p class="trip-description">@trip.Description</p>
+                            <div class="trip-description-scroll">
+                                <p class="trip-description" style="white-space: pre-wrap;">@trip.Description</p>
+                            </div>
                         </div>
                     </div>
                 </li>

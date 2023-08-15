@@ -51,7 +51,7 @@ body, ul {
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
-    height: 200px; /* Set the desired fixed height */
+    height: 350px; /* Set the desired fixed height */
     overflow: hidden; /* Hide any overflowing content */
     min-width: 250px; /* Set the desired minimum width */
 }
@@ -98,9 +98,10 @@ body, ul {
 }
 
 /* Style for trip description */
-.trip-description {
-    margin-top: 10px;
-    color: #333;
+.trip-description-scroll {
+    max-height: 200px; /* Set the maximum height you prefer */
+    overflow-y: auto; /* Enable vertical scrolling when content overflows */
+    font-size: 14px;
 }
 
 /* Style for trip length */
