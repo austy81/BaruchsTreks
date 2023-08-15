@@ -28,7 +28,7 @@
                         <div class="trip-info">
                             <div class="trip-title-container">
                                 <h3 class="trip-title">@trip.Title</h3>
-                                    <button class="edit-button" onclick="location.href='@Url.Page("CreateTrip", new { tripId = trip.id })'">Edit</button>
+                                <button class="edit-button" onclick="location.href='@Url.Page("CreateTrip", new { tripId = trip.id })'">Edit</button>
                             </div>                            
                             <span class="trip-date">Modified: (@trip.Modified)</span>
                             <p class="trip-length">Lenth: @trip.LengthHours hours</p>
