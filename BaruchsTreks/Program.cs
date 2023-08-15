@@ -1,7 +1,6 @@
 using BaruchsTreks.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
@@ -9,15 +8,26 @@ using Microsoft.Identity.Web.UI;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// https://learn.microsoft.com/en-us/aspnet/core/security/authentication/social/?view=aspnetcore-7.0&tabs=visual-studio
-builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme; // Set the challenge scheme to OpenID Connect
+})
+//.AddCookie()
+.AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd")); // Configure Microsoft Identity Web App
+//.AddGoogle(options =>
+//{
+//    options.ClientId = Configuration["Authentication:Google:ClientId"];
+//    options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+//}); // Configure Google authentication
 
 builder.Services.AddAuthorization(options =>
 {
     // By default, all incoming requests will be authorized according to the default policy.
     options.FallbackPolicy = options.DefaultPolicy;
 });
+
 builder.Services
     .AddRazorPages()
     .AddMicrosoftIdentityUI();
