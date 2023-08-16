@@ -78,7 +78,7 @@ body, ul {
 
 /* Style for the edit button */
 .edit-button {
-    background-color: #6ab4f3;
+    background-color: #8B7BFF;
     color: white;
     border: none;
     padding: 5px 10px;
@@ -88,7 +88,7 @@ body, ul {
 }
 
     .edit-button:hover {
-        background-color: #4f9fe0;
+        background-color: #634CFF;
     }
 
 /* Style for trip title */

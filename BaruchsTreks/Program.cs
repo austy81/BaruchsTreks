@@ -1,9 +1,11 @@
 using BaruchsTreks.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +47,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new RequestCulture("en-US"); // Set the desired culture
+    options.SupportedCultures = new List<CultureInfo> { new CultureInfo("en-US") };
+    options.SupportedUICultures = new List<CultureInfo> { new CultureInfo("en-US") };
+});
 
 
 var app = builder.Build();

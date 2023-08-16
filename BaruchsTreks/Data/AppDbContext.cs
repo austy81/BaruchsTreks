@@ -28,30 +28,30 @@ public class AppDbContext : IdentityDbContext
 
         base.OnModelCreating(modelBuilder);
 
-        var roleGuid = Guid.NewGuid();
-        var userGuid = Guid.NewGuid();
-        modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Id = roleGuid.ToString(), Name = "Administrator", NormalizedName = "ADMINISTRATOR".ToUpper() });
-        var hasher = new PasswordHasher<IdentityUser>();
-        //Seeding the User to AspNetUsers table
-        modelBuilder.Entity<IdentityUser>().HasData(
-            new IdentityUser
-            {
-                Id = userGuid.ToString(), // primary key
-                UserName = "admin",
-                NormalizedUserName = "ADMIN",
-                PasswordHash = hasher.HashPassword(null, "pwd")
-            }
-        );
+        //var roleGuid = Guid.NewGuid();
+        //var userGuid = Guid.NewGuid();
+        //modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Id = roleGuid.ToString(), Name = "Administrator", NormalizedName = "ADMINISTRATOR".ToUpper() });
+        //var hasher = new PasswordHasher<IdentityUser>();
+        ////Seeding the User to AspNetUsers table
+        //modelBuilder.Entity<IdentityUser>().HasData(
+        //    new IdentityUser
+        //    {
+        //        Id = userGuid.ToString(), // primary key
+        //        UserName = "admin",
+        //        NormalizedUserName = "ADMIN",
+        //        PasswordHash = hasher.HashPassword(null, "pwd")
+        //    }
+        //);
 
 
-        //Seeding the relation between our user and role to AspNetUserRoles table
-        modelBuilder.Entity<IdentityUserRole<string>>().HasData(
-            new IdentityUserRole<string>
-            {
-                RoleId = roleGuid.ToString(),
-                UserId = userGuid.ToString()
-            }
-        );
+        ////Seeding the relation between our user and role to AspNetUserRoles table
+        //modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+        //    new IdentityUserRole<string>
+        //    {
+        //        RoleId = roleGuid.ToString(),
+        //        UserId = userGuid.ToString()
+        //    }
+        //);
 
     }
 
@@ -83,11 +83,6 @@ public class AppDbContext : IdentityDbContext
             if (entityEntry.State == EntityState.Added)
             {
                 ((DbEntity)entityEntry.Entity).Created = DateTime.Now;
-            }
-
-            if (entityEntry.State == EntityState.Added)
-            {
-                ((DbEntity)entityEntry.Entity).id = Guid.NewGuid();
             }
         }
     }

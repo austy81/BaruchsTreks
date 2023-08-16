@@ -41,14 +41,14 @@
             </div>
             <div class="row">
                 <div class="form-group col-md-6">
-                    <label asp-for="Trip.HighPoint.Longtitude" class="control-label"></label>
-                    <input asp-for="Trip.HighPoint.Longtitude" class="form-control" />
-                    <span asp-validation-for="Trip.HighPoint.Longtitude" class="text-danger"></span>
+                    <label asp-for="Hlo" class="control-label"></label>
+                    <input asp-for="Hlo" class="form-control" type="" />
+                    <span asp-validation-for="Hlo" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-6">
-                    <label asp-for="Trip.HighPoint.Latitude" class="control-label"></label>
-                    <input asp-for="Trip.HighPoint.Latitude" class="form-control" />
-                    <span asp-validation-for="Trip.HighPoint.Latitude" class="text-danger"></span>
+                    <label asp-for="Hla" class="control-label"></label>
+                    <input asp-for="Hla" class="form-control" />
+                    <span asp-validation-for="Hla" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group">
@@ -57,19 +57,23 @@
             </div>
             <div class="row">
                 <div class="form-group col-md-6">
-                    <label asp-for="Trip.Parking.Longtitude" class="control-label"></label>
-                    <input asp-for="Trip.Parking.Longtitude"class="form-control" />
-                    <span asp-validation-for="Trip.Parking.Longtitude" class="text-danger"></span>
+                    <label asp-for="Plo" class="control-label"></label>
+                    <input asp-for="Plo"class="form-control" />
+                    <span asp-validation-for="Plo" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-6">
-                    <label asp-for="Trip.Parking.Latitude" class="control-label"></label>
-                    <input asp-for="Trip.Parking.Latitude" class="form-control disabled" />
-                    <span asp-validation-for="Trip.Parking.Latitude" class="text-danger"></span>
+                    <label asp-for="Pla" class="control-label"></label>
+                    <input asp-for="Pla" class="form-control disabled" />
+                    <span asp-validation-for="Pla" class="text-danger"></span>
                 </div>
             </div>
             <br />
+
+            <input type="hidden" asp-for="Trip.Modified" />
+            <input type="hidden" asp-for="Trip.Created" />
+
             <div class="form-group">
-                <input type="submit" value="Submit" class="btn btn-primary" />
+                <input type="submit" value="Submit" class="btn btn-primary edit-button" />
             </div>
         </form>
     </div>
@@ -82,8 +86,8 @@
 @*https://api.mapy.cz/view?page=geocoding*@
 
 <script type="text/javascript">
-    var centerHighPoint = SMap.Coords.fromWGS84(JAK.gel("Trip_HighPoint_Longtitude").value, JAK.gel("Trip_HighPoint_Latitude").value);
-    var centerParking = SMap.Coords.fromWGS84(JAK.gel("Trip_Parking_Longtitude").value, JAK.gel("Trip_Parking_Latitude").value);
+    var centerHighPoint = SMap.Coords.fromWGS84(JAK.gel("Hlo").value, JAK.gel("Hla").value);
+    var centerParking = SMap.Coords.fromWGS84(JAK.gel("Plo").value, JAK.gel("Pla").value);
 
 
     var mHigh = new SMap(JAK.gel("mHigh"), centerHighPoint);
@@ -119,8 +123,8 @@
         var node = e.target.getContainer();
         node[SMap.LAYER_MARKER].style.cursor = "";
         var coords = e.target.getCoords();
-        JAK.gel("Trip_HighPoint_Longtitude").value = coords.x;
-        JAK.gel("Trip_HighPoint_Latitude").value = coords.y;
+        JAK.gel("Hlo").value = coords.x;
+        JAK.gel("Hla").value = coords.y;
     }
 
     function stopParking(e) {
@@ -128,8 +132,8 @@
         node[SMap.LAYER_MARKER].style.cursor = "";
         var coords = e.target.getCoords();
 
-        JAK.gel("Trip_Parking_Longtitude").value = coords.x;
-        JAK.gel("Trip_Parking_Latitude").value = coords.y;
+        JAK.gel("Plo").value = coords.x;
+        JAK.gel("Pla").value = coords.y;
     }
 
     var signalsHigh = mHigh.getSignals();

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BaruchsTreks.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace BaruchsTreks.Pages
 {
@@ -12,6 +13,17 @@ namespace BaruchsTreks.Pages
 
         public Guid TripId { get; set; }
 
+        [BindProperty]
+        public Trip Trip { get; set; } = default;
+
+        [BindProperty]
+        public string Plo { get; set; }
+        [BindProperty]
+        public string Pla { get; set; }
+        [BindProperty]
+        public string Hlo { get; set; }
+        [BindProperty]
+        public string Hla { get; set; }
 
         public CreateTripModel(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
@@ -32,13 +44,19 @@ namespace BaruchsTreks.Pages
                 {
                     return NotFound();
                 }
+                else
+                {
+                    Hlo = Trip.HighPoint.Longtitude.ToString(CultureInfo.InvariantCulture);
+                    Hla = Trip.HighPoint.Latitude.ToString(CultureInfo.InvariantCulture);
+                    Plo = Trip.Parking.Longtitude.ToString(CultureInfo.InvariantCulture);
+                    Pla = Trip.Parking.Latitude.ToString(CultureInfo.InvariantCulture);
+                }
             }
 
             return Page();
         }
 
-        [BindProperty]
-        public Trip Trip { get; set; } = default;
+
 
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
@@ -51,6 +69,11 @@ namespace BaruchsTreks.Pages
             {
                 return Page();
             }
+
+            Trip.HighPoint.Longtitude =  double.Parse(Hlo.Replace(',', '.'), CultureInfo.InvariantCulture);
+            Trip.HighPoint.Latitude = double.Parse(Hla.Replace(',', '.'), CultureInfo.InvariantCulture);
+            Trip.Parking.Longtitude= double.Parse(Plo.Replace(',', '.'), CultureInfo.InvariantCulture);
+            Trip.Parking.Latitude = double.Parse(Pla.Replace(',', '.'), CultureInfo.InvariantCulture);
 
             if (Trip.id == Guid.Empty)
             {
