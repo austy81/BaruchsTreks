@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace BaruchsTreks.Data
+﻿namespace BaruchsTreks.Data
 {
     public class Trip: DbEntity
     {

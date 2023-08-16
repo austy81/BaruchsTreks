@@ -14,7 +14,7 @@ namespace BaruchsTreks.Pages
         public Guid TripId { get; set; }
 
         [BindProperty]
-        public Trip Trip { get; set; } = default;
+        public Trip Trip { get; set; } = new Trip();
 
         [BindProperty]
         public string Plo { get; set; }
@@ -29,6 +29,8 @@ namespace BaruchsTreks.Pages
         {
             _context = context;
             this.httpContextAccessor = httpContextAccessor;
+            //Trip.Created = DateTime.Now;
+            //Trip.Modified = DateTime.Now;
         }
 
         public async Task<IActionResult> OnGetAsync(string tripId)
