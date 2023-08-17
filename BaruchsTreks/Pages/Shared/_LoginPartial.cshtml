@@ -3,15 +3,15 @@
 <ul class="navbar-nav">
 @if (User.Identity?.IsAuthenticated == true)
 {
-        <span class="navbar-text text-dark">Hello @User.Identity?.Name!</span>
+        <span class="navbar-text text-dark">Zdravím! @User.Identity?.Name</span>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a>
+            <a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Odhlásit se</a>
         </li>
 }
 else
 {
-        <li class="nav-item visually-hidden">
-            <a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Přihlásit se</a>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Přihlásit se</a>
         </li>
 }
 </ul>

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-public class AppDbContext : IdentityDbContext
+public class AppDbContext : IdentityDbContext<AppUser>
 {
     public DbSet<Trip> Trips { get; set; }
     
@@ -22,7 +22,7 @@ public class AppDbContext : IdentityDbContext
             .Property(b => b.ConcurrencyStamp)
             .IsETagConcurrency();
 
-        modelBuilder.Entity<IdentityUser>()
+        modelBuilder.Entity<AppUser>()
             .Property(b => b.ConcurrencyStamp)
             .IsETagConcurrency();
 
@@ -31,10 +31,10 @@ public class AppDbContext : IdentityDbContext
         //var roleGuid = Guid.NewGuid();
         //var userGuid = Guid.NewGuid();
         //modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Id = roleGuid.ToString(), Name = "Administrator", NormalizedName = "ADMINISTRATOR".ToUpper() });
-        //var hasher = new PasswordHasher<IdentityUser>();
+        //var hasher = new PasswordHasher<AppUser>();
         ////Seeding the User to AspNetUsers table
-        //modelBuilder.Entity<IdentityUser>().HasData(
-        //    new IdentityUser
+        //modelBuilder.Entity<AppUser>().HasData(
+        //    new AppUser
         //    {
         //        Id = userGuid.ToString(), // primary key
         //        UserName = "admin",
@@ -45,7 +45,7 @@ public class AppDbContext : IdentityDbContext
 
 
         ////Seeding the relation between our user and role to AspNetUserRoles table
-        //modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+        //modelBuilder.Entity<AppUserRole<string>>().HasData(
         //    new IdentityUserRole<string>
         //    {
         //        RoleId = roleGuid.ToString(),

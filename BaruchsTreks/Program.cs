@@ -6,18 +6,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using System.Globalization;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme; // Set the challenge scheme to OpenID Connect
-})
-//.AddCookie()
-.AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd")); // Configure Microsoft Identity Web App
+//builder.Services.AddAuthentication(options =>
+//{
+//    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme; // Set the challenge scheme to OpenID Connect
+//})
+//.AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd")); // Configure Microsoft Identity Web App
 //.AddGoogle(options =>
 //{
 //    options.ClientId = Configuration["Authentication:Google:ClientId"];
@@ -29,10 +29,15 @@ builder.Services.AddAuthentication(options =>
 //    // By default, all incoming requests will be authorized according to the default policy.
 //    options.FallbackPolicy = options.DefaultPolicy;
 //});
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireUppercase = false;
+});
 
 builder.Services
     .AddRazorPages()
     .AddMicrosoftIdentityUI();
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     {
@@ -44,16 +49,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
         _ = options.UseCosmos(cosmosDbConnectionString, databaseName);
     });
+builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<AppDbContext>();
+
 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.Configure<RequestLocalizationOptions>(options =>
-{
-    options.DefaultRequestCulture = new RequestCulture("en-US"); // Set the desired culture
-    options.SupportedCultures = new List<CultureInfo> { new CultureInfo("en-US") };
-    options.SupportedUICultures = new List<CultureInfo> { new CultureInfo("en-US") };
-});
 
 
 var app = builder.Build();
@@ -74,33 +76,7 @@ using (var scope = app.Services.CreateScope())
     //await context.Database.EnsureDeletedAsync();
     await context.Database.EnsureCreatedAsync();
 
-    //context.Add(new Trip()
-    //{
-    //    Title = "Demo",
-    //    LengthHours = 8
-    //});
 
-    //string[] roles = new string[] { "owner", "visitor" };
-
-    //foreach (string role in roles)
-    //{
-    //    context.Add(new IdentityRole(role));
-    //}
-
-    //var user = new IdentityUser
-    //{
-    //    Email = "xxxx@example.com",
-    //    NormalizedEmail = "XXXX@EXAMPLE.COM",
-    //    UserName = "Owner",
-    //    NormalizedUserName = "OWNER",
-    //    PhoneNumber = "+111111111111",
-    //    EmailConfirmed = true,
-    //    PhoneNumberConfirmed = true,
-    //    SecurityStamp = Guid.NewGuid().ToString("D"),
-    //};
-    //context.Add(user);
-
-    await context.SaveChangesAsync();
 }
 
 app.UseHttpsRedirection();
@@ -108,9 +84,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-//app.UseAuthentication();
-
-//app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();

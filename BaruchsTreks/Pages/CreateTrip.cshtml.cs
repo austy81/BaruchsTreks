@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using BaruchsTreks.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BaruchsTreks.Pages
 {
+    [Authorize]
     public class CreateTripModel : PageModel
     {
         private readonly AppDbContext _context;

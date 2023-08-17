@@ -1,9 +1,19 @@
 ﻿@page "/CreateTrip"
 @model BaruchsTreks.Pages.CreateTripModel
 
+@using BaruchsTreks.Data;
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+
 @{
     ViewData["Title"] = "CreateTrip";
     Layout = "~/Pages/Shared/_Layout.cshtml";
+    var isContributor = false;
+    if (User.Identity?.Name != null)
+    {
+        var loggedUser = await UserManager.FindByNameAsync(User.Identity.Name);
+        isContributor = loggedUser?.IsContributor ?? false;
+    }
 }
 
 <script type="text/javascript" src="https://api.mapy.cz/loader.js"></script>
@@ -72,9 +82,12 @@
             <input type="hidden" asp-for="Trip.Modified" />
             <input type="hidden" asp-for="Trip.Created" />
 
-            <div class="form-group">
-                <input type="submit" value="Submit" class="btn btn-primary edit-button" />
-            </div>
+            @if (isContributor)
+            {
+                <div class="form-group">
+                    <input type="submit" value="Submit" class="btn btn-primary edit-button" />
+                </div>
+            }
         </form>
     </div>
 </div>
