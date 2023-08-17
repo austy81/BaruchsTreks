@@ -29,8 +29,6 @@ namespace BaruchsTreks.Pages
         {
             _context = context;
             this.httpContextAccessor = httpContextAccessor;
-            //Trip.Created = DateTime.Now;
-            //Trip.Modified = DateTime.Now;
         }
 
         public async Task<IActionResult> OnGetAsync(string tripId)
