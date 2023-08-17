@@ -5,7 +5,7 @@
 {
         <span class="navbar-text text-dark">Zdravím! @User.Identity?.Name</span>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Odhlásit se</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="Account/Logout">Odhlásit se</a>
         </li>
 }
 else
