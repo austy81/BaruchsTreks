@@ -40,12 +40,6 @@ jobs:
       with:
         name: webapp
         path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-
-    - name: Setup Node 18.x
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
-
     - name: Deploy to Azure WebApp
       uses: azure/webapps-deploy@v2
       with:
