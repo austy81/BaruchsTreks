@@ -19,13 +19,13 @@ namespace BaruchsTreks.Pages
         public Trip Trip { get; set; } = new Trip();
 
         [BindProperty]
-        public string Plo { get; set; }
+        public string Plo { get; set; } = string.Empty;
         [BindProperty]
-        public string Pla { get; set; }
+        public string Pla { get; set; } = string.Empty;
         [BindProperty]
-        public string Hlo { get; set; }
+        public string Hlo { get; set; } = string.Empty;
         [BindProperty]
-        public string Hla { get; set; }
+        public string Hla { get; set; } = string.Empty;
 
         public CreateTripModel(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
@@ -41,8 +41,8 @@ namespace BaruchsTreks.Pages
                 TripId = Guid.Parse(tripId);
 
                 // Load existing trip for editing
-                Trip = await _context.Trips.FirstOrDefaultAsync(t => t.id == TripId);
-                if (Trip == null)
+                Trip = await _context.Trips.FirstOrDefaultAsync(t => t.id == TripId) ?? new Trip();
+                if (Trip == null || Trip.id == Guid.Empty)
                 {
                     return NotFound();
                 }

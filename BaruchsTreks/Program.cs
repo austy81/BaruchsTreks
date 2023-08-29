@@ -44,8 +44,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         var config = builder.Configuration;
 
 
-        var databaseName = config.GetValue<string>("CosmosDatabaseName");
-        var cosmosDbConnectionString = config.GetValue<string>("COSMOSDB_CONNECTION_STRING");
+        var databaseName = config.GetValue<string>("CosmosDatabaseName")!;
+        var cosmosDbConnectionString = config.GetValue<string>("COSMOSDB_CONNECTION_STRING")!;
 
         _ = options.UseCosmos(cosmosDbConnectionString, databaseName);
     });
