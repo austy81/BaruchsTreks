@@ -40,6 +40,12 @@ jobs:
       with:
         name: webapp
         path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+    - name: Setup Node 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
     - name: Deploy to Azure WebApp
       uses: azure/webapps-deploy@v2
       with:
