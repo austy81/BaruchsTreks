@@ -11,7 +11,7 @@ env:
   WORKING_DIRECTORY: BaruchsTreks
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET SDK
