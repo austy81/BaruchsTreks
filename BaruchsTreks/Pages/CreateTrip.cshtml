@@ -57,7 +57,7 @@
             <div class="row">
                 <div class="form-group col-md-3">
                     <label asp-for="trip.UiaaGrade" class="control-label">UIAA grade</label>
-                    @Html.DropDownListFor(model => model.trip.UiaaGrade, new SelectList(Model.UiaaGradeList, "Key", "Value"), "--Select TeaType--")
+                    @Html.DropDownListFor(model => model.trip.UiaaGrade, new SelectList(Model.UiaaGradeList, "Key", "Value"), "--Select UIAA Grade--")
                     <span asp-validation-for="trip.UiaaGrade" class="text-danger"></span>
                 </div>
             </div>
