@@ -4,6 +4,7 @@ using BaruchsTreks.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
+using BaruchsTreks.Enums;
 
 namespace BaruchsTreks.Pages
 {
@@ -16,7 +17,7 @@ namespace BaruchsTreks.Pages
         public Guid TripId { get; set; }
 
         [BindProperty]
-        public Trip Trip { get; set; } = new Trip();
+        public Trip trip { get; set; } = new Trip();
 
         [BindProperty]
         public string Plo { get; set; } = string.Empty;
@@ -26,6 +27,19 @@ namespace BaruchsTreks.Pages
         public string Hlo { get; set; } = string.Empty;
         [BindProperty]
         public string Hla { get; set; } = string.Empty;
+
+        [BindProperty]
+        public List<KeyValuePair<string, string>> UiaaGradeList { 
+            get
+            {
+                var result = new List<KeyValuePair<string, string>>();
+                foreach (UiaaGradeEnum grade in Enum.GetValues(typeof(UiaaGradeEnum)))
+                {
+                    result.Add(new KeyValuePair<string, string>(grade.ToString(), grade.DisplayNameForEnum()));
+                }
+                return result;
+            }
+        }
 
         public CreateTripModel(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
@@ -41,17 +55,17 @@ namespace BaruchsTreks.Pages
                 TripId = Guid.Parse(tripId);
 
                 // Load existing trip for editing
-                Trip = await _context.Trips.FirstOrDefaultAsync(t => t.id == TripId) ?? new Trip();
-                if (Trip == null || Trip.id == Guid.Empty)
+                trip = await _context.Trips.FirstOrDefaultAsync(t => t.id == TripId) ?? new Trip();
+                if (trip == null || trip.id == Guid.Empty)
                 {
                     return NotFound();
                 }
                 else
                 {
-                    Hlo = Trip.HighPoint.Longtitude.ToString(CultureInfo.InvariantCulture);
-                    Hla = Trip.HighPoint.Latitude.ToString(CultureInfo.InvariantCulture);
-                    Plo = Trip.Parking.Longtitude.ToString(CultureInfo.InvariantCulture);
-                    Pla = Trip.Parking.Latitude.ToString(CultureInfo.InvariantCulture);
+                    Hlo = trip.HighPoint.Longtitude.ToString(CultureInfo.InvariantCulture);
+                    Hla = trip.HighPoint.Latitude.ToString(CultureInfo.InvariantCulture);
+                    Plo = trip.Parking.Longtitude.ToString(CultureInfo.InvariantCulture);
+                    Pla = trip.Parking.Latitude.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -65,27 +79,27 @@ namespace BaruchsTreks.Pages
         public async Task<IActionResult> OnPostAsync()
         {
             var tripId = httpContextAccessor.HttpContext!.Request.Query["tripId"];
-            Trip.id = Guid.TryParse(tripId, out var tripIdGuid) ? tripIdGuid : Guid.Empty;
+            trip.id = Guid.TryParse(tripId, out var tripIdGuid) ? tripIdGuid : Guid.Empty;
 
-            if (!ModelState.IsValid || Trip == null)
+            if (!ModelState.IsValid || trip == null)
             {
                 return Page();
             }
 
-            Trip.HighPoint.Longtitude =  double.Parse(Hlo.Replace(',', '.'), CultureInfo.InvariantCulture);
-            Trip.HighPoint.Latitude = double.Parse(Hla.Replace(',', '.'), CultureInfo.InvariantCulture);
-            Trip.Parking.Longtitude= double.Parse(Plo.Replace(',', '.'), CultureInfo.InvariantCulture);
-            Trip.Parking.Latitude = double.Parse(Pla.Replace(',', '.'), CultureInfo.InvariantCulture);
+            trip.HighPoint.Longtitude =  double.Parse(Hlo.Replace(',', '.'), CultureInfo.InvariantCulture);
+            trip.HighPoint.Latitude = double.Parse(Hla.Replace(',', '.'), CultureInfo.InvariantCulture);
+            trip.Parking.Longtitude= double.Parse(Plo.Replace(',', '.'), CultureInfo.InvariantCulture);
+            trip.Parking.Latitude = double.Parse(Pla.Replace(',', '.'), CultureInfo.InvariantCulture);
 
-            if (Trip.id == Guid.Empty)
+            if (trip.id == Guid.Empty)
             {
                 // Create new trip
-                _context.Trips.Add(Trip);
+                _context.Trips.Add(trip);
             }
             else
             {
                 // Update existing trip
-                _context.Trips.Update(Trip);
+                _context.Trips.Update(trip);
             }
 
             await _context.SaveChangesAsync();
