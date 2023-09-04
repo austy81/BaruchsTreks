@@ -39,7 +39,8 @@ builder.Services
     .AddMicrosoftIdentityUI();
 
 
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services
+    .AddDbContext<AppDbContext>(options =>
     {
         var config = builder.Configuration;
 
@@ -49,11 +50,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
         _ = options.UseCosmos(cosmosDbConnectionString, databaseName);
     });
-builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services
+
+    .AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<AppDbContext>();
 
-builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
-
+builder.Services.AddApplicationInsightsTelemetry( x=> x.ConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"] );
 builder.Services.AddHttpContextAccessor();
 
 

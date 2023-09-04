@@ -27,32 +27,6 @@ public class AppDbContext : IdentityDbContext<AppUser>
             .IsETagConcurrency();
 
         base.OnModelCreating(modelBuilder);
-
-        //var roleGuid = Guid.NewGuid();
-        //var userGuid = Guid.NewGuid();
-        //modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Id = roleGuid.ToString(), Name = "Administrator", NormalizedName = "ADMINISTRATOR".ToUpper() });
-        //var hasher = new PasswordHasher<AppUser>();
-        ////Seeding the User to AspNetUsers table
-        //modelBuilder.Entity<AppUser>().HasData(
-        //    new AppUser
-        //    {
-        //        Id = userGuid.ToString(), // primary key
-        //        UserName = "admin",
-        //        NormalizedUserName = "ADMIN",
-        //        PasswordHash = hasher.HashPassword(null, "pwd")
-        //    }
-        //);
-
-
-        ////Seeding the relation between our user and role to AspNetUserRoles table
-        //modelBuilder.Entity<AppUserRole<string>>().HasData(
-        //    new IdentityUserRole<string>
-        //    {
-        //        RoleId = roleGuid.ToString(),
-        //        UserId = userGuid.ToString()
-        //    }
-        //);
-
     }
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)

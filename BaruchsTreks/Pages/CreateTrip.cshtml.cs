@@ -29,17 +29,11 @@ namespace BaruchsTreks.Pages
         public string Hla { get; set; } = string.Empty;
 
         [BindProperty]
-        public List<KeyValuePair<string, string>> UiaaGradeList { 
-            get
-            {
-                var result = new List<KeyValuePair<string, string>>();
-                foreach (UiaaGradeEnum grade in Enum.GetValues(typeof(UiaaGradeEnum)))
-                {
-                    result.Add(new KeyValuePair<string, string>(grade.ToString(), grade.DisplayNameForEnum()));
-                }
-                return result;
-            }
-        }
+        public List<KeyValuePair<string, string>> UiaaGradeList => GetEnumDisplayList<UiaaGradeEnum>();
+
+        [BindProperty]
+        public List<KeyValuePair<string, string>> AlpineGradeList => GetEnumDisplayList<AlpineGradeEnum>();
+
 
         public CreateTripModel(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
@@ -105,5 +99,16 @@ namespace BaruchsTreks.Pages
             await _context.SaveChangesAsync();
             return RedirectToPage("./Index");
         }
+
+        private List<KeyValuePair<string, string>> GetEnumDisplayList<TEnum>() where TEnum : Enum
+        {
+            var result = new List<KeyValuePair<string, string>>();
+            foreach (TEnum enumValue in Enum.GetValues(typeof(TEnum)))
+            {
+                result.Add(new KeyValuePair<string, string>(enumValue.ToString(), enumValue.DisplayNameForEnum()));
+            }
+            return result;
+        }
+
     }
 }

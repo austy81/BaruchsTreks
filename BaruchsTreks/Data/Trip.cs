@@ -12,12 +12,13 @@ namespace BaruchsTreks.Data
         public LocalGeometry Parking { get; set; } = new LocalGeometry();
         public LocalGeometry HighPoint { get; set; } = new LocalGeometry();
 
-        public int MetersAscend { get; set; }
-        public int? MetersDescend { get; set; }
+        public int MetersAscend { get; set; } = 0;
+        public int MetersDescend { get; set; } = 0;
 
-        public UiaaGradeEnum? UiaaGrade { get; set; } = UiaaGradeEnum.IIIPlus;
+        public UiaaGradeEnum UiaaGrade { get; set; } = UiaaGradeEnum.none;
 
-        // Navigation property to represent the collection of ratings for this trip idea
+        public AlpineGradeEnum? AlpineGrade { get; set;} = AlpineGradeEnum.none;
+
     }
 
     public class LocalGeometry

@@ -60,6 +60,12 @@
                     @Html.DropDownListFor(model => model.trip.UiaaGrade, new SelectList(Model.UiaaGradeList, "Key", "Value"), "--Select UIAA Grade--")
                     <span asp-validation-for="trip.UiaaGrade" class="text-danger"></span>
                 </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="trip.AlpineGrade" class="control-label">Alpine grade</label>
+                    @Html.DropDownListFor(model => model.trip.AlpineGrade, new SelectList(Model.AlpineGradeList, "Key", "Value"), "--Select Alpine Grade--")
+                    <span asp-validation-for="trip.AlpineGrade" class="text-danger"></span>
+                </div>
             </div>
 
 
