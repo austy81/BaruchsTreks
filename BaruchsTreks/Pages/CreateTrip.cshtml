@@ -37,17 +37,17 @@
                 <span asp-validation-for="trip.Description" class="text-danger"></span>
             </div>
             <div class="row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                     <label asp-for="trip.LengthHours" class="control-label">Length in hours</label>
                     <input asp-for="trip.LengthHours" class="form-control" />
                     <span asp-validation-for="trip.LengthHours" class="text-danger"></span>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                     <label asp-for="trip.MetersAscend" class="control-label">Meters ascend</label>
                     <input asp-for="trip.MetersAscend" class="form-control" />
                     <span asp-validation-for="trip.MetersAscend" class="text-danger"></span>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                     <label asp-for="trip.MetersDescend" class="control-label">Meters descend</label>
                     <input asp-for="trip.MetersDescend" class="form-control" />
                     <span asp-validation-for="trip.MetersDescend" class="text-danger"></span>
@@ -55,15 +55,15 @@
             </div>
 
             <div class="row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                     <label asp-for="trip.UiaaGrade" class="control-label">UIAA grade</label>
-                    @Html.DropDownListFor(model => model.trip.UiaaGrade, new SelectList(Model.UiaaGradeList, "Key", "Value"), "--Select UIAA Grade--")
+                    @Html.DropDownListFor(model => model.trip.UiaaGrade, new SelectList(Model.UiaaGradeList, "Key", "Value"), "--Select UIAA Grade--", new {@class = "form-control"} )
                     <span asp-validation-for="trip.UiaaGrade" class="text-danger"></span>
                 </div>
 
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                     <label asp-for="trip.AlpineGrade" class="control-label">Alpine grade</label>
-                    @Html.DropDownListFor(model => model.trip.AlpineGrade, new SelectList(Model.AlpineGradeList, "Key", "Value"), "--Select Alpine Grade--")
+                    @Html.DropDownListFor(model => model.trip.AlpineGrade, new SelectList(Model.AlpineGradeList, "Key", "Value"), "--Select Alpine Grade--", new {@class = "form-control"} )
                     <span asp-validation-for="trip.AlpineGrade" class="text-danger"></span>
                 </div>
             </div>
