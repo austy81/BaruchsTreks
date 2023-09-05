@@ -15,7 +15,7 @@ namespace BaruchsTreks.Data
         public int MetersAscend { get; set; } = 0;
         public int MetersDescend { get; set; } = 0;
 
-        public UiaaGradeEnum UiaaGrade { get; set; } = UiaaGradeEnum.none;
+        public UiaaGradeEnum? UiaaGrade { get; set; } = UiaaGradeEnum.none;
 
         public AlpineGradeEnum? AlpineGrade { get; set;} = AlpineGradeEnum.none;
 
