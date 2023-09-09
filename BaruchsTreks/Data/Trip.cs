@@ -7,7 +7,7 @@ namespace BaruchsTreks.Data
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
-        public int LengthHours { get; set; }
+        public decimal LengthHours { get; set; }
 
         public LocalGeometry Parking { get; set; } = new LocalGeometry();
         public LocalGeometry HighPoint { get; set; } = new LocalGeometry();
@@ -19,6 +19,9 @@ namespace BaruchsTreks.Data
 
         public AlpineGradeEnum? AlpineGrade { get; set;} = AlpineGradeEnum.none;
 
+        public TripClassEnum? TripClass { get; set; } = TripClassEnum.none;
+
+        public string? Participants { get; set; } = string.Empty;
     }
 
     public class LocalGeometry

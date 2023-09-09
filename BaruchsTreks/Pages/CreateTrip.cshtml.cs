@@ -34,6 +34,8 @@ namespace BaruchsTreks.Pages
         [BindProperty]
         public List<KeyValuePair<string, string>> AlpineGradeList => GetEnumDisplayList<AlpineGradeEnum>();
 
+        [BindProperty]
+        public List<KeyValuePair<string, string>> TripClassList => GetEnumDisplayList<TripClassEnum>();
 
         public CreateTripModel(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
