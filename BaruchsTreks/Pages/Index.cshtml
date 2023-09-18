@@ -9,7 +9,7 @@
     ViewData["Title"] = "Přehled";
     var trips = dbContext.Trips;
     var tripsCount = trips.Count();
-    var latestTrips = trips.OrderByDescending(o => o.Modified).Take(5).ToList();
+    var latestTrips = trips.OrderByDescending(o => o.Modified).Take(100).ToList();
 }
 
 <div class="container">
