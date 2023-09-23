@@ -21,6 +21,8 @@ namespace BaruchsTreks.Data
 
         public TripClassEnum? TripClass { get; set; } = TripClassEnum.none;
 
+        public FerrataGradeEnum? FerataGrade { get; set; } = FerrataGradeEnum.none;
+
         public string? Participants { get; set; } = string.Empty;
     }
 
