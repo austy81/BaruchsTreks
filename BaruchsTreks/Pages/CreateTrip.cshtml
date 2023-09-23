@@ -31,10 +31,18 @@
                 <input asp-for="trip.Title" class="form-control" />
                 <span asp-validation-for="trip.Title" class="text-danger"></span>
             </div>
-            <div class="form-group ">
-                <label asp-for="trip.TripClass" class="control-label">Kategorie</label>
-                @Html.DropDownListFor(model => model.trip.TripClass, new SelectList(Model.TripClassList, "Key", "Value"), "--Vyber kategorii--", new {@class = "form-control"} )
-                <span asp-validation-for="trip.TripClass" class="text-danger"></span>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="trip.TripClass" class="control-label">Category</label>
+                    @Html.DropDownListFor(model => model.trip.TripClass, new SelectList(Model.TripClassList, "Key", "Value"), "--Vyber kategorii--", new {@class = "form-control"} )
+                    <span asp-validation-for="trip.TripClass" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="trip.TripCompletedOn"></label>
+                    @Html.TextBoxFor(model => model.trip.TripCompletedOn, new { @type="date", @class = "form-control datepicker",  @Value = Model.trip.TripCompletedOn?.ToString("dd/MM/yyyy") } )
+                    <span asp-validation-for="trip.TripCompletedOn" class="text-danger"></span>
+                </div>
+
             </div>
             <div class="form-group">
                 <label asp-for="trip.Description" class="control-label"></label>
@@ -139,6 +147,7 @@
 </div>
 
 @*https://api.mapy.cz/view?page=geocoding*@
+
 
 <script type="text/javascript">
     var centerHighPoint = SMap.Coords.fromWGS84(JAK.gel("Hlo").value, JAK.gel("Hla").value);

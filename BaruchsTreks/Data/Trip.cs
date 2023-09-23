@@ -24,6 +24,8 @@ namespace BaruchsTreks.Data
         public FerrataGradeEnum? FerataGrade { get; set; } = FerrataGradeEnum.none;
 
         public string? Participants { get; set; } = string.Empty;
+
+        public DateOnly? TripCompletedOn { get; set; } = null;
     }
 
     public class LocalGeometry

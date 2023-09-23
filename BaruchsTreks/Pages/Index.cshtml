@@ -29,7 +29,7 @@
                             <div class="trip-title-container">
                                 <div class="row">
 
-                                    <h3 class="trip-title col-md-6">@trip.Title</h3>
+                                    <h3 class="trip-title col-md-12">@trip.Title</h3>
                                     <div class="col-md-6 text-right">
         @*                              <svg width="30" height="30" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16.333 19">
                                             <circle cx="9.347" cy="1.525" r="1.525" />
@@ -39,7 +39,7 @@
                                 </div>
                                 <button class="edit-button" onclick="location.href='@Url.Page("CreateTrip", new { tripId = trip.id })'">Edit</button>
                             </div>                            
-                            <span class="trip-date">Modified: (@trip.Modified)</span>
+                            <span class="trip-date">Date: (@trip.TripCompletedOn?.ToString("dd/MM/yyyy"))</span>
                             <p class="trip-length">Length: @trip.LengthHours hours</p>
                             <div class="trip-description-scroll">
                                 <p class="trip-description" style="white-space: pre-wrap;">@trip.Description</p>
