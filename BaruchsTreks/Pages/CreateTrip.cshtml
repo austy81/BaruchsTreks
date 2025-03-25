@@ -198,14 +198,20 @@
         // Add marker to high point map
         const highMarker = L.marker([highLat, highLon], {
             draggable: true,
-            title: "High point"
+            title: "High point",
+            autoPan: true
         }).addTo(mHigh);
         
         // Handle marker drag events for high point
+        highMarker.on('dragstart', function(event) {
+            mHigh.dragging.disable(); // Temporarily disable map dragging during marker drag
+        });
+        
         highMarker.on('dragend', function(event) {
             const position = highMarker.getLatLng();
             document.getElementById("Hla").value = position.lat;
             document.getElementById("Hlo").value = position.lng;
+            mHigh.dragging.enable(); // Re-enable map dragging
         });
         
         // Initialize parking map
@@ -230,14 +236,20 @@
         // Add marker to parking map
         const parkingMarker = L.marker([parkingLat, parkingLon], {
             draggable: true,
-            title: "Start"
+            title: "Start",
+            autoPan: true
         }).addTo(mParking);
         
         // Handle marker drag events for parking
+        parkingMarker.on('dragstart', function(event) {
+            mParking.dragging.disable(); // Temporarily disable map dragging during marker drag
+        });
+        
         parkingMarker.on('dragend', function(event) {
             const position = parkingMarker.getLatLng();
             document.getElementById("Pla").value = position.lat;
             document.getElementById("Plo").value = position.lng;
+            mParking.dragging.enable(); // Re-enable map dragging
         });
         
         // Setup search functionality for high point
@@ -278,9 +290,17 @@
         function searchLocation(query, map, marker, latInputId, lonInputId) {
             if (!query.trim()) return;
             
+            // Prepare the query - ensure it's properly encoded for multi-word searches
+            const encodedQuery = encodeURIComponent(query.trim());
+            
             // Call the geocode API
-            fetch(`https://api.mapy.cz/v1/geocode?query=${encodeURIComponent(query)}&lang=cs&apikey=${API_KEY}`)
-                .then(response => response.json())
+            fetch(`https://api.mapy.cz/v1/geocode?query=${encodedQuery}&limit=10&lang=cs&apikey=${API_KEY}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`API responded with status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.items && data.items.length > 0) {
                         const result = data.items[0];
@@ -294,9 +314,15 @@
                         // Update form inputs
                         document.getElementById(latInputId).value = lat;
                         document.getElementById(lonInputId).value = lon;
+                    } else {
+                        console.error("No results found for query:", query);
+                        alert("Nenalezeno. Zkuste upřesnit hledání.");
                     }
                 })
-                .catch(error => console.error("Error searching location:", error));
+                .catch(error => {
+                    console.error("Error searching location:", error);
+                    alert("Chyba při hledání. Zkuste to znovu.");
+                });
         }
     });
 </script>
