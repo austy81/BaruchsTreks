@@ -1,4 +1,4 @@
-﻿@page "/CreateTrip"
+@page "/CreateTrip"
 @model BaruchsTreks.Pages.CreateTripModel
 
 @using BaruchsTreks.Data;
@@ -17,8 +17,8 @@
     }
 }
 
-<script type="text/javascript" src="https://api.mapy.cz/loader.js"></script>
-<script type="text/javascript">Loader.load();</script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
 <h1>CreateTrip</h1>
 
@@ -95,6 +95,12 @@
             <br />
             <div class="form-group">
                 <label class="control-label">High point</label>
+                <div class="input-group mb-3">
+                    <input type="text" id="highPointSearch" class="form-control" placeholder="Search location...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="highPointSearchBtn">Search</button>
+                    </div>
+                </div>
                 <div id="mHigh" style="height:380px"></div>
             </div>
             <div class="row">
@@ -113,6 +119,12 @@
             <br />
             <div class="form-group">
                 <label class="control-label">Start</label>
+                <div class="input-group mb-3">
+                    <input type="text" id="parkingSearch" class="form-control" placeholder="Search location...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="parkingSearchBtn">Search</button>
+                    </div>
+                </div>
                 <div id="mParking" style="height:380px"></div>
             </div>
             <div class="row">
@@ -146,67 +158,173 @@
     <a asp-page="Index">Back to List</a>
 </div>
 
-@*https://api.mapy.cz/view?page=geocoding*@
-
+@*https://developer.mapy.cz/rest-api/*@
 
 <script type="text/javascript">
-    var centerHighPoint = SMap.Coords.fromWGS84(JAK.gel("Hlo").value, JAK.gel("Hla").value);
-    var centerParking = SMap.Coords.fromWGS84(JAK.gel("Plo").value, JAK.gel("Pla").value);
-
-
-    var mHigh = new SMap(JAK.gel("mHigh"), centerHighPoint);
-    mHigh.addDefaultLayer(SMap.DEF_BASE).enable();
-    var mouseHigh = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM); /* Ovládání myší */
-    mHigh.addControl(mouseHigh);
-
-    var mParking = new SMap(JAK.gel("mParking"), centerParking);
-    mParking.addDefaultLayer(SMap.DEF_BASE).enable();
-    var mouseParking = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM); /* Ovládání myší */
-    mParking.addControl(mouseParking);
-
-    var l1 = new SMap.Layer.Marker();
-    mHigh.addLayer(l1).enable();
+    // API key for mapy.cz REST API - Replace with your actual API key
+    const API_KEY = 'QJdxpgMs2Px5Sf1xkHfTDKh1JcT4PhmVeK2eid5COZI';
     
-    var l2 = new SMap.Layer.Marker();
-    mParking.addLayer(l2).enable();
-
-    var mark = new SMap.Marker(centerHighPoint);
-    mark.decorate(SMap.Marker.Feature.Draggable);
-    l1.addMarker(mark);
-
-    var mark2 = new SMap.Marker(centerParking);
-    mark2.decorate(SMap.Marker.Feature.Draggable);
-    l2.addMarker(mark2);
-
-    function start(e) { /* Začátek tažení */
-        var node = e.target.getContainer();
-        node[SMap.LAYER_MARKER].style.cursor = "help";
-    }
-
-    function stop(e) {
-        var node = e.target.getContainer();
-        node[SMap.LAYER_MARKER].style.cursor = "";
-        var coords = e.target.getCoords();
-        JAK.gel("Hlo").value = coords.x;
-        JAK.gel("Hla").value = coords.y;
-    }
-
-    function stopParking(e) {
-        var node = e.target.getContainer();
-        node[SMap.LAYER_MARKER].style.cursor = "";
-        var coords = e.target.getCoords();
-
-        JAK.gel("Plo").value = coords.x;
-        JAK.gel("Pla").value = coords.y;
-    }
-
-    var signalsHigh = mHigh.getSignals();
-    signalsHigh.addListener(window, "marker-drag-stop", stop);
-    signalsHigh.addListener(window, "marker-drag-start", start);
-
-    var signalsParking = mParking.getSignals();
-    signalsParking.addListener(window, "marker-drag-stop", stopParking);
-    signalsParking.addListener(window, "marker-drag-start", start);
+    // Default coordinates if inputs are empty (center of Czech Republic)
+    const defaultLat = 49.8175;
+    const defaultLon = 15.4730;
+    
+    // Get coordinates from inputs or use defaults
+    let highLon = document.getElementById("Hlo").value || defaultLon;
+    let highLat = document.getElementById("Hla").value || defaultLat;
+    let parkingLon = document.getElementById("Plo").value || defaultLon;
+    let parkingLat = document.getElementById("Pla").value || defaultLat;
+    
+    // Initialize maps when document is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize high point map
+        const mHigh = L.map('mHigh').setView([highLat, highLon], 13);
+        
+        // Add tile layer from mapy.cz REST API
+        L.tileLayer('https://api.mapy.cz/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=' + API_KEY, {
+            minZoom: 1,
+            maxZoom: 19,
+            attribution: '<a href="https://mapy.cz/" target="_blank">Mapy.cz</a>'
+        }).addTo(mHigh);
+        
+        // Add Mapy.cz logo for proper attribution
+        const mapyczLogo = L.control({position: 'bottomleft'});
+        mapyczLogo.onAdd = function() {
+            const div = L.DomUtil.create('div', 'mapycz-logo');
+            div.innerHTML = '<a href="https://mapy.cz/" target="_blank"><img src="https://api.mapy.cz/img/api/logo.svg" alt="Mapy.cz" style="height:24px;"></a>';
+            return div;
+        };
+        mapyczLogo.addTo(mHigh);
+        
+        // Add marker to high point map
+        const highMarker = L.marker([highLat, highLon], {
+            draggable: true,
+            title: "High point",
+            autoPan: true
+        }).addTo(mHigh);
+        
+        // Handle marker drag events for high point
+        highMarker.on('dragstart', function(event) {
+            mHigh.dragging.disable(); // Temporarily disable map dragging during marker drag
+        });
+        
+        highMarker.on('dragend', function(event) {
+            const position = highMarker.getLatLng();
+            document.getElementById("Hla").value = position.lat;
+            document.getElementById("Hlo").value = position.lng;
+            mHigh.dragging.enable(); // Re-enable map dragging
+        });
+        
+        // Initialize parking map
+        const mParking = L.map('mParking').setView([parkingLat, parkingLon], 13);
+        
+        // Add tile layer from mapy.cz REST API
+        L.tileLayer('https://api.mapy.cz/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=' + API_KEY, {
+            minZoom: 1,
+            maxZoom: 19,
+            attribution: '<a href="https://mapy.cz/" target="_blank">Mapy.cz</a>'
+        }).addTo(mParking);
+        
+        // Add Mapy.cz logo for proper attribution
+        const mapyczLogo2 = L.control({position: 'bottomleft'});
+        mapyczLogo2.onAdd = function() {
+            const div = L.DomUtil.create('div', 'mapycz-logo');
+            div.innerHTML = '<a href="https://mapy.cz/" target="_blank"><img src="https://api.mapy.cz/img/api/logo.svg" alt="Mapy.cz" style="height:24px;"></a>';
+            return div;
+        };
+        mapyczLogo2.addTo(mParking);
+        
+        // Add marker to parking map
+        const parkingMarker = L.marker([parkingLat, parkingLon], {
+            draggable: true,
+            title: "Start",
+            autoPan: true
+        }).addTo(mParking);
+        
+        // Handle marker drag events for parking
+        parkingMarker.on('dragstart', function(event) {
+            mParking.dragging.disable(); // Temporarily disable map dragging during marker drag
+        });
+        
+        parkingMarker.on('dragend', function(event) {
+            const position = parkingMarker.getLatLng();
+            document.getElementById("Pla").value = position.lat;
+            document.getElementById("Plo").value = position.lng;
+            mParking.dragging.enable(); // Re-enable map dragging
+        });
+        
+        // Setup search functionality for high point
+        const highPointSearchInput = document.getElementById("highPointSearch");
+        const highPointSearchBtn = document.getElementById("highPointSearchBtn");
+        
+        // Handle search button click for high point
+        highPointSearchBtn.addEventListener("click", function() {
+            searchLocation(highPointSearchInput.value, mHigh, highMarker, "Hla", "Hlo");
+        });
+        
+        // Handle Enter key press for high point search
+        highPointSearchInput.addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                searchLocation(highPointSearchInput.value, mHigh, highMarker, "Hla", "Hlo");
+            }
+        });
+        
+        // Setup search functionality for parking
+        const parkingSearchInput = document.getElementById("parkingSearch");
+        const parkingSearchBtn = document.getElementById("parkingSearchBtn");
+        
+        // Handle search button click for parking
+        parkingSearchBtn.addEventListener("click", function() {
+            searchLocation(parkingSearchInput.value, mParking, parkingMarker, "Pla", "Plo");
+        });
+        
+        // Handle Enter key press for parking search
+        parkingSearchInput.addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                searchLocation(parkingSearchInput.value, mParking, parkingMarker, "Pla", "Plo");
+            }
+        });
+        
+        // Function to search for a location and update the map and marker
+        function searchLocation(query, map, marker, latInputId, lonInputId) {
+            if (!query.trim()) return;
+            
+            // Prepare the query - ensure it's properly encoded for multi-word searches
+            const encodedQuery = encodeURIComponent(query.trim());
+            
+            // Call the geocode API
+            fetch(`https://api.mapy.cz/v1/geocode?query=${encodedQuery}&limit=10&lang=cs&apikey=${API_KEY}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`API responded with status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.items && data.items.length > 0) {
+                        const result = data.items[0];
+                        const lat = result.position.lat;
+                        const lon = result.position.lon;
+                        
+                        // Update map and marker
+                        map.setView([lat, lon], 15);
+                        marker.setLatLng([lat, lon]);
+                        
+                        // Update form inputs
+                        document.getElementById(latInputId).value = lat;
+                        document.getElementById(lonInputId).value = lon;
+                    } else {
+                        console.error("No results found for query:", query);
+                        alert("Nenalezeno. Zkuste upřesnit hledání.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error searching location:", error);
+                    alert("Chyba při hledání. Zkuste to znovu.");
+                });
+        }
+    });
 </script>
 
 @section Scripts {
