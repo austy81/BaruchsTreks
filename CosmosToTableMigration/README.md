@@ -52,3 +52,22 @@ Enum values are stored as strings in Azure Table Storage.
 
 The migration tool includes basic error handling and will report any failures during migration.
 It will continue processing other records even if some fail.
+
+## Security Best Practices
+
+### Handling Connection Strings
+
+This migration tool requires connection strings to both Azure Cosmos DB and Azure Storage. These connection strings contain sensitive information and should be handled securely:
+
+1. **Never commit connection strings to source control**
+   - The `appsettings.json` file has been added to `.gitignore` to prevent accidental commits
+   - Use `appsettings.template.json` as a template and create your own local `appsettings.json` with actual values
+
+2. **Secure your connection strings**
+   - In production environments, consider using Azure Key Vault or environment variables
+   - Rotate your keys periodically
+   - Use managed identities when possible
+
+3. **Before running the migration**
+   - Make sure you have the correct connection strings in your local `appsettings.json` file
+   - Ensure you have the necessary permissions on both the source and target services
